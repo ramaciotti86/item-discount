@@ -1,22 +1,18 @@
 package model;
 
-import lombok.*;
 import repository.ProductRepository;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.DoubleStream;
 
-@Data
-@ToString
-@Builder
-@EqualsAndHashCode
-@NoArgsConstructor
 public class Cart {
 
     private Map<String, CartItem> items;
     private ProductRepository repository;
+    private Double discount;
 
     public Cart (ProductRepository productRepository){
+        discount = 0.00;
         this.items = new HashMap<>();
         this.repository = productRepository;
     }
@@ -31,4 +27,19 @@ public class Cart {
         }
     }
 
+    public void addDiscount(Double discount){
+        this.discount += Math.floor(discount * 100) / 100;
+    }
+
+    public Double getDiscount(){
+        return discount;
+    }
+
+    public Map<String, CartItem> getItems() {
+        return items;
+    }
+
+    public Double getTotal() {
+        return Math.floor(items.values().stream().flatMapToDouble(x -> DoubleStream.of(x.getProduct().getPrice() * x.getQuantity())).sum()*100)/100;
+    }
 }

@@ -3,9 +3,9 @@ package model;
 import lombok.*;
 
 @Data
-@ToString
 @Builder
 @EqualsAndHashCode
+@AllArgsConstructor
 public class Product {
 
     private String id;
